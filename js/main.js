@@ -16,6 +16,7 @@ function ed_send_data(sym)
         for (var i = 1; i <= json_content.cant_combo_cartas; i++) {
             sym.$("carta_" + i + "_A").prop('ed_linked_to', 'carta_' + i + '_B');
             sym.$("carta_" + i + "_B").prop('ed_linked_to', 'carta_' + i + '_A');
+            allWordsNeeded.push("carta_" + i + "_A","carta_" + i + "_B");
         }
 
         /*Una vez termine de leer y llenar los datos del JSON en la plantilla, se envía la solicitud de revisión de
@@ -66,16 +67,49 @@ $('body').on('EDGE_Recurso_sendPreviousData EDGE_Recurso_postSubmitApplied',func
         stage.prop('ed_user_attempts',evt.attempts);
     }
 
+    if(evt.show_answers)
+    {
+        show_the_answers(evt);
+    }
+
+    if(evt.reset)
+    {
+        return_to_normal(evt);
+    }
+
 });
 
-function block_every_text(sym)
+function show_the_answers(sym)
 {
-    var json_content = $(sym.getComposition().getStage().ele).prop('ed_json_property_object');
-    for (var i = json_content.palabras_a_escribir.length - 1; i >= 0; i--)
+    var turnItRight = false;
+    for (var i = allWordsNeeded.length - 1; i >= 0; i--)
     {
-        sym.$('text_'+(i+1)).find('input[type="text"]').prop('readonly','readonly');
-        sym.$('text_'+(i+1)).find('input[type="text"]').attr('readonly','readonly');
+        for(var j = nonClickableCards.length - 1; j>= 0; j--)
+        {
+            console.log(allWordsNeeded[j] +" !!!!! "+ nonClickableCards[i]);
+            if(nonClickableCards[j] == allWordsNeeded[i])
+            {
+                allWordsNeeded[i] = null;
+            }
+        }
     }
+
+    for(var i = allWordsNeeded.length - 1; i >= 0; i--)
+    {
+        if(allWordsNeeded[i] != null)
+        {
+            sym.getSymbol(""+allWordsNeeded[i]+"").playReverse("a");
+        }        
+    }
+}
+
+function return_to_normal(sym)
+{
+    for (var i = nonClickableCards.length - 1; i >= 0; i--)
+    {
+        sym.getSymbol(""+nonClickableCards[i]+"").playReverse("a");
+    }
+    nonClickableCards = [];  
 }
 
 /* --- Variables a utilizar:
@@ -96,6 +130,7 @@ var clickOnHold = {}; //Si es el mismo simbolo, no permita hacer click.
 clickOnHold.nameOfCard = '';
 clickOnHold.canYouClick = true;
 var nonClickableCards = [];
+var allWordsNeeded = [];
 var timeRunning;
 
 function carta_clickeada(sym, nombreCarta)
@@ -141,6 +176,11 @@ function carta_clickeada(sym, nombreCarta)
             console.log("Está mal y hay que re-ordenar las cartas");            
             is_wrong_then(sym, nombreCarta);
         }
+
+        if(nonClickableCards.length == allWordsNeeded.length)
+        {
+            do_submit(sym);
+        }
     }
 }
 
@@ -175,14 +215,13 @@ $('body').on('EDGE_Recurso_Submit', function(evt)
 });
 
 function do_submit(sym)
-{
+{    
     var stage = $(sym.getComposition().getStage().ele);
     var json_content = stage.prop("ed_json_property_object");
     var retorno_datos = {};
     retorno_datos.attempts_to = stage.prop('ed_user_attempts');
     retorno_datos.user_answer = nonClickableCards;
     retorno_datos.user_answer_score = Math.round(nonClickableCards.length / 2);
-    console.log(retorno_datos.user_answer);
 
     if (stage.prop('ed_blocked'))
     {

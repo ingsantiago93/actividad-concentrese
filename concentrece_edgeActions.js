@@ -45,7 +45,7 @@ var Composition = Edge.Composition, Symbol = Edge.Symbol; // los alias más comu
 
       Symbol.bindElementAction(compId, symbolName, "${btn_submit}", "click", function(sym, e) {
          // introducir aquí código para clic de ratón
-         EDGE_Recurso_Submit(sym);
+         //EDGE_Recurso_Submit(sym)
       });
       //Edge binding end
 
