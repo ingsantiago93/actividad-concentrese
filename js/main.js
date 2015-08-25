@@ -38,6 +38,17 @@ function ed_send_data(sym)
     });
 }
 
+function send_on_change(sym)
+{
+    var stage = $(sym.getComposition().getStage().ele);
+    parent.$(parent.document).trigger(
+    {
+        type: "EDGE_Plantilla_on_change",
+        sym: sym,
+        identify: stage.prop("ed_identify")
+    });
+}
+
 $('body').on('EDGE_Recurso_postSubmitApplied', function (evt)
 {
     if (evt.show_answers) {
@@ -191,7 +202,7 @@ function carta_clickeada(sym, nombreCarta)
 
     if (nombreCarta == clickOnHold.nameOfCard || clickOnHold.canYouClick == false)
     {
-        console.log("You can not click me");
+        //console.log("You can not click me");
         return;
     }
 
@@ -199,34 +210,34 @@ function carta_clickeada(sym, nombreCarta)
     {
         if (nonClickableCards[i] == nombreCarta)
         {
-            console.log("No se puede clickear esta carta, pues forma parte de las que ya están completas");
+            //console.log("No se puede clickear esta carta, pues forma parte de las que ya están completas");
             return;
         }
     }
-    ;
 
     if (clickOnHold.nameOfCard == '')
     {
-        console.log("this is the new clickOnHold");
+        //console.log("this is the new clickOnHold");
         clickOnHold.nameOfCard = nombreCarta;
         sym.getSymbol("" + nombreCarta + "").playReverse("a");
-        console.log(clickOnHold.nameOfCard);
+        //console.log(clickOnHold.nameOfCard);
+        send_on_change(sym);
     }
     else
     {
         sym.getSymbol("" + nombreCarta + "").playReverse("a");
-        console.info("And their properties");
-        console.log(sym.$("" + nombreCarta + "").prop('ed_linked_to') + " ______________ " + clickOnHold.nameOfCard);
+        //console.info("And their properties");
+        //console.log(sym.$("" + nombreCarta + "").prop('ed_linked_to') + " ______________ " + clickOnHold.nameOfCard);
         if (sym.$("" + nombreCarta + "").prop('ed_linked_to') == clickOnHold.nameOfCard)
         {
-            console.log("¡Está bien!... Y toca dejar las cartas de forma que no se puedan clickear");
+            //console.log("¡Está bien!... Y toca dejar las cartas de forma que no se puedan clickear");
             nonClickableCards.push(nombreCarta, clickOnHold.nameOfCard);
             clickOnHold.nameOfCard = '';
         }
         else
         {
             clickOnHold.canYouClick = false;
-            console.log("Está mal y hay que re-ordenar las cartas");
+            //console.log("Está mal y hay que re-ordenar las cartas");
             is_wrong_then(sym, nombreCarta);
         }
 
