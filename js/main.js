@@ -41,12 +41,56 @@ function ed_send_data(sym)
 function send_on_change(sym)
 {
     var stage = $(sym.getComposition().getStage().ele);
+    var json_content = stage.prop("ed_json_property_object");
+    var retorno_datos = {};
+    retorno_datos.attempts_to = stage.prop('ed_user_attempts');
+    retorno_datos.user_answer = nonClickableCards;
+    retorno_datos.user_answer_score = Math.round(nonClickableCards.length / 2);
+    retorno_datos.isReady = true;
+
+    if (stage.prop('ed_blocked'))
+    {
+        return;
+    }
+
+    if (retorno_datos.user_answer_score >= json_content.cant_combo_cartas)
+    {
+        retorno_datos.final_stage = "correct";
+    }
+    else
+    {
+        retorno_datos.final_stage = "incorrect";
+    }
+
+    var timer = {};
+    if (stage.prop("usa_timer")) {
+        var timerObj = buscar_sym(sym, stage.prop("timer"), true);
+        timer.remaining_time = timerObj.prop("segundos_restantes");
+        timer.current_state = timerObj.prop("alertState");
+    } else {
+        //timer.timerObj = null;
+        timer.remaining_time = null;
+        timer.current_state = null;
+    }
+
+    ed_obj_evt.timer = timer;
+
     parent.$(parent.document).trigger(
     {
-        type: "EDGE_Plantilla_on_change",
+        type: "EDGE_Plantilla_submitApplied",
+        interactionType: "other",
+        json: json_content,
+        isReady: retorno_datos.isReady,
+        answer: retorno_datos.user_answer,
+        results: retorno_datos.final_stage,
+        attempts: retorno_datos.attempts_to,
+        attempts_limit: json_content.attempts,
         sym: sym,
         identify: stage.prop("ed_identify")
     });
+
+    parent.$(parent.document).trigger(ed_obj_evt);
+
 }
 
 $('body').on('EDGE_Recurso_postSubmitApplied', function (evt)
@@ -62,8 +106,7 @@ $('body').on('EDGE_Recurso_postSubmitApplied', function (evt)
         {
             evt.sym.getSymbol("" + evt.previous_data[i] + "").playReverse("a");
             nonClickableCards.push(evt.previous_data[i]);
-        }
-        ;
+        };
     }
 
     if (evt.block)
@@ -86,7 +129,7 @@ $('body').on('EDGE_Recurso_postSubmitApplied', function (evt)
     if (typeof (evt.attempts) != "undefined")
     {
         stage.prop('ed_user_attempts', evt.attempts);
-    }
+    }  
 
 });
 
