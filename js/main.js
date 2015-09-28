@@ -182,7 +182,7 @@ function show_the_answers(sym)
     {
         for (var j = nonClickableCards.length - 1; j >= 0; j--)
         {
-            console.log(allWordsNeeded[j] + " !!!!! " + nonClickableCards[i]);
+            //console.log(allWordsNeeded[j] + " !!!!! " + nonClickableCards[i]);
             if (nonClickableCards[j] == allWordsNeeded[i])
             {
                 allWordsNeeded[i] = null;
@@ -245,7 +245,7 @@ function carta_clickeada(sym, nombreCarta)
 
     if (nombreCarta == clickOnHold.nameOfCard || clickOnHold.canYouClick == false)
     {
-        //console.log("You can not click me");
+        ////console.log("You can not click me");
         return;
     }
 
@@ -253,34 +253,34 @@ function carta_clickeada(sym, nombreCarta)
     {
         if (nonClickableCards[i] == nombreCarta)
         {
-            //console.log("No se puede clickear esta carta, pues forma parte de las que ya están completas");
+            ////console.log("No se puede clickear esta carta, pues forma parte de las que ya están completas");
             return;
         }
     }
 
     if (clickOnHold.nameOfCard == '')
     {
-        //console.log("this is the new clickOnHold");
+        ////console.log("this is the new clickOnHold");
         clickOnHold.nameOfCard = nombreCarta;
         sym.getSymbol("" + nombreCarta + "").playReverse("a");
-        //console.log(clickOnHold.nameOfCard);
+        ////console.log(clickOnHold.nameOfCard);
         send_on_change(sym);
     }
     else
     {
         sym.getSymbol("" + nombreCarta + "").playReverse("a");
         //console.info("And their properties");
-        //console.log(sym.$("" + nombreCarta + "").prop('ed_linked_to') + " ______________ " + clickOnHold.nameOfCard);
+        ////console.log(sym.$("" + nombreCarta + "").prop('ed_linked_to') + " ______________ " + clickOnHold.nameOfCard);
         if (sym.$("" + nombreCarta + "").prop('ed_linked_to') == clickOnHold.nameOfCard)
         {
-            //console.log("¡Está bien!... Y toca dejar las cartas de forma que no se puedan clickear");
+            ////console.log("¡Está bien!... Y toca dejar las cartas de forma que no se puedan clickear");
             nonClickableCards.push(nombreCarta, clickOnHold.nameOfCard);
             clickOnHold.nameOfCard = '';
         }
         else
         {
             clickOnHold.canYouClick = false;
-            //console.log("Está mal y hay que re-ordenar las cartas");
+            ////console.log("Está mal y hay que re-ordenar las cartas");
             is_wrong_then(sym, nombreCarta);
         }
 
@@ -427,7 +427,7 @@ function do_submit_timeout(sym)
 function buscar_sym(sym, arrSymSearch, boolJQUERY) {
     var temp = sym;
     $.each(arrSymSearch, function (index, value) {
-        //EDGE_Plantilla.debug ? console.log(temp, index, value, arrSymSearch) : false;
+        //EDGE_Plantilla.debug ? //console.log(temp, index, value, arrSymSearch) : false;
 
         if (!isEmpty(boolJQUERY) && index === arrSymSearch.length - 1) {
             temp = temp.$(value);
@@ -436,7 +436,7 @@ function buscar_sym(sym, arrSymSearch, boolJQUERY) {
         }
 
     });
-    //EDGE_Plantilla.debug ? console.log(temp, arrSymSearch, boolJQUERY) : false;
+    //EDGE_Plantilla.debug ? //console.log(temp, arrSymSearch, boolJQUERY) : false;
     return temp;
 }
 
