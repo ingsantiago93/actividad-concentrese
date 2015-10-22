@@ -54,10 +54,11 @@
                             rect: ['1393px', '359px', 'undefined', 'undefined', 'auto', 'auto']
                         },
                         {
-                            id: 'btn_submit',
-                            symbolName: 'btn_submit',
+                            id: 'Submit',
+                            symbolName: 'Submit',
                             type: 'rect',
-                            rect: ['630', '351', '200', '177', 'auto', 'auto']
+                            rect: ['796px', '338px', 'undefined', 'undefined', 'auto', 'auto'],
+                            cursor: 'pointer'
                         }
                     ],
                     style: {
@@ -70,10 +71,29 @@
                     }
                 },
                 timeline: {
-                    duration: 500,
+                    duration: 2000,
                     autoPlay: true,
                     data: [
-
+                        [
+                            "eid54",
+                            "left",
+                            250,
+                            0,
+                            "linear",
+                            "${Submit}",
+                            '796px',
+                            '796px'
+                        ],
+                        [
+                            "eid55",
+                            "top",
+                            250,
+                            0,
+                            "linear",
+                            "${Submit}",
+                            '338px',
+                            '338px'
+                        ]
                     ]
                 }
             },
@@ -317,8 +337,7 @@
                     ],
                     style: {
                         '${symbolSelector}': {
-                            isStage: 'true',
-                            rect: [undefined, undefined, '200px', '177px']
+                            rect: [null, null, '200px', '177px']
                         }
                     }
                 },
@@ -327,6 +346,72 @@
                     autoPlay: true,
                     data: [
 
+                    ]
+                }
+            },
+            "Submit": {
+                version: "6.0.0",
+                minimumCompatibleVersion: "5.0.0",
+                build: "6.0.0.400",
+                scaleToFit: "none",
+                centerStage: "none",
+                resizeInstances: false,
+                content: {
+                    dom: [
+                        {
+                            rect: ['0px', '1px', '213px', '43px', 'auto', 'auto'],
+                            borderRadius: ['23px', '23px', '23px', '23px 23px'],
+                            stroke: [0, 'rgba(0,0,0,1)', 'none'],
+                            id: 'RoundRect',
+                            opacity: '0.5',
+                            type: 'rect',
+                            fill: ['rgba(192,192,192,1)', [270, [['rgba(111,67,158,1.00)', 50], ['rgba(84,53,118,1.00)', 50]]]],
+                            c: [
+                            {
+                                rect: ['0px', '-1px', '213px', '31px', 'auto', 'auto'],
+                                font: ['Arial, Helvetica, sans-serif', [24, ''], 'rgba(0,0,0,1)', 'normal', 'none', '', 'break-word', 'normal'],
+                                id: 'texto_4',
+                                text: '<p style=\"margin: 0px; text-align: center;\">​<span style=\"font-family: source-sans-pro, sans-serif; font-weight: 600; color: rgb(255, 255, 255); font-size: 25px;\">Enviar</span></p>',
+                                textShadow: ['rgba(0,0,0,0.65098)', 1, 1, 1],
+                                type: 'text'
+                            }]
+                        }
+                    ],
+                    style: {
+                        '${symbolSelector}': {
+                            isStage: 'true',
+                            rect: [undefined, undefined, '213px', '43px']
+                        }
+                    }
+                },
+                timeline: {
+                    duration: 2000,
+                    autoPlay: true,
+                    labels: {
+                        "desactivado": 0,
+                        "activado": 2000
+                    },
+                    data: [
+                        [
+                            "eid356",
+                            "opacity",
+                            0,
+                            0,
+                            "linear",
+                            "${RoundRect}",
+                            '0.5',
+                            '0.5'
+                        ],
+                        [
+                            "eid355",
+                            "opacity",
+                            2000,
+                            0,
+                            "linear",
+                            "${RoundRect}",
+                            '0.5',
+                            '1'
+                        ]
                     ]
                 }
             }

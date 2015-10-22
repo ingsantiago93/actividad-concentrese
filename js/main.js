@@ -95,10 +95,11 @@ function send_on_change(sym)
 
 $('body').on('EDGE_Recurso_postSubmitApplied', function (evt)
 {
-    if (evt.show_answers) {
+    if (evt.show_answers)
+    {
         show_the_answers(evt.sym);
     }
-
+    
     var stage = $(evt.sym.getComposition().getStage().ele);
     if (typeof (evt.previous_data) != "undefined")
     {
